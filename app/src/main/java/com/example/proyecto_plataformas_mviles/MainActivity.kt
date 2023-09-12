@@ -41,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
@@ -150,6 +151,7 @@ fun Greeting(modifier: Modifier = Modifier) {
                                     user = newText
                                 }
                             },
+                            singleLine = true,
                             placeholder = { Text("Correo electrónico") },
                             label = { Text("Usuario") },
                             textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
@@ -159,7 +161,10 @@ fun Greeting(modifier: Modifier = Modifier) {
                                 .background(Color.White),
                             colors = TextFieldDefaults.textFieldColors(
                                 containerColor = Color(218, 215, 205)
-                            )
+                            ),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Email,
+                                imeAction = ImeAction.Next)
                         )
 
                     }
@@ -192,6 +197,7 @@ fun Greeting(modifier: Modifier = Modifier) {
                                     password = newText2
                                 }
                             },
+                            maxLines = 1,
                             label = { Text("Contraseña") },
                             textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
                             modifier = Modifier
@@ -201,10 +207,12 @@ fun Greeting(modifier: Modifier = Modifier) {
                             visualTransformation = PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions.Default.copy(
                                 keyboardType = KeyboardType.Password,
+                                imeAction = ImeAction.Next
                             ),
                             colors = TextFieldDefaults.textFieldColors(
                                 containerColor = Color(218, 215, 205)
-                            )
+                            ),
+                            singleLine = true,
                         )
 
                     }
