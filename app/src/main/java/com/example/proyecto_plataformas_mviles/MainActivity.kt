@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
             Proyecto_Plataformas_móvilesTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize() ,color = colorb ) {
-                    Greeting("")
+                    Greeting()
                 }
             }
         }
@@ -68,10 +68,10 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting(modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    var text by remember { mutableStateOf("") }
-    var text2 by remember { mutableStateOf("") }
+    var user by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -144,10 +144,10 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                             )
 
                         TextField(
-                            value = text,
+                            value = user,
                             onValueChange = { newText ->
                                 if (newText.length <= 25) {
-                                    text = newText
+                                    user = newText
                                 }
                             },
                             placeholder = { Text("Correo electrónico") },
@@ -186,10 +186,10 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                             )
 
                         TextField(
-                            value = text2,
+                            value = password,
                             onValueChange = { newText2 ->
                                 if (newText2.length <= 10) {
-                                    text2 = newText2
+                                    password = newText2
                                 }
                             },
                             label = { Text("Contraseña") },
@@ -216,7 +216,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
                 Button(
                     onClick = {
-                        if (ValidUser( text ,text2)) {
+                        if (validUser(user,password)) {
                             val intent = Intent(context, Supermarket::class.java)
                             context.startActivity(intent)
                         }
@@ -272,8 +272,8 @@ private val correos = mapOf(
     "Sergio23@gmail.com" to "Sergio23",
     "Admin2@gmail.com" to "Admin2",
 )
-private fun ValidUser(text: String, text2: String): Boolean {
-    return correos[text] == text2
+private fun validUser(user: String, password: String): Boolean {
+    return correos[user] == password
 }
 
 
@@ -283,7 +283,7 @@ private fun ValidUser(text: String, text2: String): Boolean {
 fun GreetingPreview() {
     Proyecto_Plataformas_móvilesTheme {
         Surface(modifier = Modifier.fillMaxSize() ,color = colorb ) {
-            Greeting("")
+            Greeting()
         }
     }
 }
