@@ -23,6 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Supermarket"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Proyecto_Plataformas_móviles" >
+        </activity>
+
     </application>
 
 </manifest>
