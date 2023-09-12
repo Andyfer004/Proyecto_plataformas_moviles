@@ -2,6 +2,7 @@ package com.example.proyecto_plataformas_mviles
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -154,14 +156,17 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                     text = newText
                                 }
                             },
-                            label = { Text("Correo electrónico") },
+                            placeholder = { Text("Correo electrónico") },
+                            label = { Text("Usuario") },
                             textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
                             modifier = Modifier
                                 .width(276.dp)
                                 .padding(0.dp)
                                 .background(Color.White),
-
+                            colors = TextFieldDefaults.textFieldColors(
+                                containerColor = Color(218, 215, 205)
                             )
+                        )
 
                     }
                 }
@@ -184,7 +189,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                             tint = Color.Black,
                             modifier = Modifier
                                 .padding(10.dp),
-
                             )
 
                         TextField(
@@ -202,8 +206,10 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                                 .background(Color.White),
                             visualTransformation = PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions.Default.copy(
-                                keyboardType = KeyboardType.Password
-
+                                keyboardType = KeyboardType.Password,
+                            ),
+                            colors = TextFieldDefaults.textFieldColors(
+                                containerColor = Color(218, 215, 205)
                             )
                         )
 
@@ -219,6 +225,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                         if (ValidUser( text ,text2)) {
                             val intent = Intent(context, Supermarket::class.java)
                             context.startActivity(intent)
+                        }
+                        else{
+                            Toast.makeText(context, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
                         }
                     },
                     modifier = Modifier
@@ -279,6 +288,8 @@ private fun ValidUser(text: String, text2: String): Boolean {
 @Composable
 fun GreetingPreview() {
     Proyecto_Plataformas_móvilesTheme {
-        Greeting("")
+        Surface(modifier = Modifier.fillMaxSize() ,color = colorb ) {
+            Greeting("")
+        }
     }
 }
