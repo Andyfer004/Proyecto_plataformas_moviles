@@ -133,7 +133,7 @@ fun Greeting(modifier: Modifier = Modifier) {
                     shape = RoundedCornerShape(15.dp),
                     color = Color.White,
                 ) {
-                    Row() {
+                    Row {
                         Icon(
                             painter = painterResource(id = R.drawable.gmail),
                             contentDescription = null,
@@ -176,7 +176,7 @@ fun Greeting(modifier: Modifier = Modifier) {
                     shape = RoundedCornerShape(15.dp),
                     color = Color.White,
                 ) {
-                    Row() {
+                    Row {
                         Icon(
                             painter = painterResource(id = R.drawable.key),
                             contentDescription = null,
