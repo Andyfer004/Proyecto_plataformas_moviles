@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Proyecto_Plataformas_móviles</string>
+    <string name="app_name">La tienda chapina</string>
+    <string name="welcome">Bienvenido</string>
+    <string name="correo">Correo electrónico</string>
+    <string name="lista_chapina">To lista chapina</string>
+    <string name="user">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="error_user_password">Usuario o contraseña incorrectos</string>
+    <string name="sign_in">Iniciar sesión</string>
+    <string name="new_session">¿No tienes cuenta?, presiona aquí</string>
+    <string name="supermarket">Supermarket</string>
 </resources>

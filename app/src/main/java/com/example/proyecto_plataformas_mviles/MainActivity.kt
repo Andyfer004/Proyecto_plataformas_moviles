@@ -1,5 +1,6 @@
 package com.example.proyecto_plataformas_mviles
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -25,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -39,6 +41,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -73,6 +76,8 @@ fun Greeting(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var user by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val error = stringResource(R.string.error_user_password)
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -107,14 +112,14 @@ fun Greeting(modifier: Modifier = Modifier) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
-                            text = "Welcome",
+                            text = stringResource(R.string.welcome),
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.bodyLarge,
                             color = Color.Black,
                         )
                         Text(
-                            text = "To lista chapina",
+                            text = stringResource(R.string.lista_chapina),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.bodyLarge,
@@ -152,8 +157,8 @@ fun Greeting(modifier: Modifier = Modifier) {
                                 }
                             },
                             singleLine = true,
-                            placeholder = { Text("Correo electrónico") },
-                            label = { Text("Usuario") },
+                            placeholder = { Text(stringResource(R.string.correo)) },
+                            label = { Text(stringResource(R.string.user)) },
                             textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
                             modifier = Modifier
                                 .width(276.dp)
@@ -198,7 +203,7 @@ fun Greeting(modifier: Modifier = Modifier) {
                                 }
                             },
                             maxLines = 1,
-                            label = { Text("Contraseña") },
+                            label = { Text(stringResource(R.string.password)) },
                             textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
                             modifier = Modifier
                                 .width(276.dp)
@@ -229,11 +234,11 @@ fun Greeting(modifier: Modifier = Modifier) {
                             context.startActivity(intent)
                         }
                         else{
-                            Toast.makeText(context, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
                         }
                     },
                     modifier = Modifier
-                        .width(150.dp)
+                        .width(250.dp)
                         .align(Alignment.CenterHorizontally),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.White,
@@ -243,8 +248,8 @@ fun Greeting(modifier: Modifier = Modifier) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
-                            text = "Sign in",
-                            fontSize = 30.sp,
+                            text = stringResource(R.string.sign_in),
+                            fontSize = 25.sp,
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.bodyLarge,
                             color = Color.Black,
@@ -260,8 +265,14 @@ fun Greeting(modifier: Modifier = Modifier) {
                         .fillMaxWidth()
                         .padding(start = 16.dp)
                 ) {
+                    TextButton(onClick = {
+                        context.startActivity(Intent(context, New_Account::class.java))
+                        context
+                    }) {
+
+                    }
                     Text(
-                        text = "No tienes cuenta?, presiona aquí",
+                        text = stringResource(R.string.new_session),
                         fontSize = 13.sp,
                         style = MaterialTheme.typography.bodyLarge,
                         color = Color.Black,
