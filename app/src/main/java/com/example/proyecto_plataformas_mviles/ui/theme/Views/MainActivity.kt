@@ -1,6 +1,5 @@
-package com.example.proyecto_plataformas_mviles
+package com.example.proyecto_plataformas_mviles.ui.theme.Views
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -51,6 +50,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.proyecto_plataformas_mviles.R
 import com.example.proyecto_plataformas_mviles.ui.theme.Proyecto_Plataformas_móvilesTheme
 import com.example.proyecto_plataformas_mviles.ui.theme.colora
 import com.example.proyecto_plataformas_mviles.ui.theme.colorb
