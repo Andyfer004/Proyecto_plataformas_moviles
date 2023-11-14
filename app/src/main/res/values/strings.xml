@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">La tienda chapina</string>
     <string name="supermarkets_view">Selecciona un supermercado</string>
+    <string name="select_product">Seleccionar un producto</string>
+    <string name="end_list">Terminar lista</string>
     <string name="welcome">Bienvenido</string>
-    <string name="search">Buscar</string>
+    <string name="search_list">Buscar lista</string>
+    <string name="search_product">Buscar producto</string>
+    <string name="selected_product">Producto seleccionado</string>
     <string name="create_account">Crear cuenta</string>
     <string name="correo">Correo electrónico</string>
     <string name="lista_chapina">To lista chapina</string>

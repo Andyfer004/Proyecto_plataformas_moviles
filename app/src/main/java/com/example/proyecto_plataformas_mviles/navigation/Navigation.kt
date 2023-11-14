@@ -9,6 +9,8 @@ import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting
 import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting2
 import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting4
 import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting5
+import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting6
+import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting7
 import com.example.proyecto_plataformas_mviles.ui.theme.views.Supermarket
 
 @Composable
@@ -34,6 +36,12 @@ fun Navigation(modifier: Modifier = Modifier) {
         }
         composable("SearchList"){
             Greeting5(navController = navController)
+        }
+        composable("SearchProduct"){
+            Greeting6(navController = navController)
+        }
+        composable("SelectedProduct"){
+            Greeting7(navController = navController)
         }
     }
 }

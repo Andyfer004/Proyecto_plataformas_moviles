@@ -81,7 +81,7 @@ class SearchList : ComponentActivity() {
                                 .padding(10.dp)
                         )
                         Text(
-                            text = stringResource(R.string.search),
+                            text = stringResource(R.string.search_list),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.bodyLarge,
