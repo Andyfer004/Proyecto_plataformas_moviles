@@ -1,6 +1,5 @@
-package com.example.proyecto_plataformas_mviles.ui.theme.Views
+package com.example.proyecto_plataformas_mviles.ui.theme.views
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -17,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -25,7 +25,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -41,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -50,32 +50,36 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.proyecto_plataformas_mviles.R
 import com.example.proyecto_plataformas_mviles.ui.theme.Proyecto_Plataformas_móvilesTheme
 import com.example.proyecto_plataformas_mviles.ui.theme.colora
 import com.example.proyecto_plataformas_mviles.ui.theme.colorb
 import com.example.proyecto_plataformas_mviles.ui.theme.transparent
 
-class MainActivity : ComponentActivity() {
+class New_Account : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             Proyecto_Plataformas_móvilesTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize() ,color = colorb ) {
-                    Greeting()
+                    Greeting4(navController = rememberNavController() )
                 }
             }
         }
     }
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Greeting(modifier: Modifier = Modifier) {
+fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
     val context = LocalContext.current
     var user by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var secondpassword by remember { mutableStateOf("") }
     val error = stringResource(R.string.error_user_password)
 
     Column(
@@ -95,7 +99,7 @@ fun Greeting(modifier: Modifier = Modifier) {
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(
                     modifier = Modifier
@@ -104,7 +108,7 @@ fun Greeting(modifier: Modifier = Modifier) {
                 Surface(
                     modifier = Modifier
                         .width(276.dp)
-                        .height(70.dp),
+                        .height(50.dp),
                     shape = RoundedCornerShape(15.dp),
                     color = colora,
                 ) {
@@ -112,15 +116,8 @@ fun Greeting(modifier: Modifier = Modifier) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
-                            text = stringResource(R.string.welcome),
+                            text = stringResource(R.string.create_account),
                             fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.Black,
-                        )
-                        Text(
-                            text = stringResource(R.string.lista_chapina),
-                            fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.bodyLarge,
                             color = Color.Black,
@@ -129,7 +126,7 @@ fun Greeting(modifier: Modifier = Modifier) {
                 }
                 Spacer(
                     modifier = Modifier
-                        .height(100.dp)
+                        .height(60.dp)
                 )
                 Surface(
                     modifier = Modifier
@@ -169,7 +166,8 @@ fun Greeting(modifier: Modifier = Modifier) {
                             ),
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Email,
-                                imeAction = ImeAction.Next)
+                                imeAction = ImeAction.Next
+                            )
                         )
 
                     }
@@ -193,7 +191,7 @@ fun Greeting(modifier: Modifier = Modifier) {
                             tint = Color.Black,
                             modifier = Modifier
                                 .padding(10.dp),
-                            )
+                        )
 
                         TextField(
                             value = password,
@@ -222,87 +220,133 @@ fun Greeting(modifier: Modifier = Modifier) {
 
                     }
                 }
-                Spacer(
-                    modifier = Modifier
-                        .height(100.dp)
-                )
-
-                Button(
-                    onClick = {
-                        if (validUser(user,password)) {
-                            val intent = Intent(context, Supermarket::class.java)
-                            context.startActivity(intent)
-                        }
-                        else{
-                            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
-                        }
-                    },
-                    modifier = Modifier
-                        .width(250.dp)
-                        .align(Alignment.CenterHorizontally),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.White,
+                    Spacer(
+                        modifier = Modifier
+                            .height(20.dp)
                     )
-                ){
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                    Surface(
+                        modifier = Modifier
+                            .width(276.dp)
+                            .height(60.dp)
+                            .border(1.dp, Color.Black, RoundedCornerShape(15.dp)),
+                        shape = RoundedCornerShape(15.dp),
+                        color = Color.White,
                     ) {
-                        Text(
-                            text = stringResource(R.string.sign_in),
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.Black,
-                        )
+                        Row {
+                            Icon(
+                                painter = painterResource(id = R.drawable.key),
+                                contentDescription = null,
+                                tint = Color.Black,
+                                modifier = Modifier
+                                    .padding(10.dp),
+                            )
+
+                            TextField(
+                                value = secondpassword,
+                                onValueChange = { newText3 ->
+                                    if (newText3.length <= 10) {
+                                        secondpassword = newText3
+                                    }
+                                },
+                                maxLines = 1,
+                                label = { Text(stringResource(R.string.password2)) },
+                                textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
+                                modifier = Modifier
+                                    .width(276.dp)
+                                    .padding(0.dp)
+                                    .background(Color.White),
+                                visualTransformation = PasswordVisualTransformation(),
+                                keyboardOptions = KeyboardOptions.Default.copy(
+                                    keyboardType = KeyboardType.Password,
+                                    imeAction = ImeAction.Next
+                                ),
+                                colors = TextFieldDefaults.textFieldColors(
+                                    containerColor = Color(218, 215, 205)
+                                ),
+                                singleLine = true,
+                            )
+                        }
                     }
-                }
-                Spacer(
-                    modifier = Modifier
-                        .height(10.dp)
-                )
+                    Spacer(
+                        modifier = Modifier
+                            .height(70.dp)
+                    )
+
+                    Button(
+                        onClick = {
+                            if (user == "" || password == "" || secondpassword == "") {
+                                Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+                            } else {
+                                if (password == secondpassword) {
+                                    Toast.makeText(context, "Cuenta creada", Toast.LENGTH_SHORT)
+                                        .show()
+                                    navController.navigate("MainActivity")
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "Contraseñas no coinciden",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
+                            }
+                        },
+                        modifier = Modifier
+                            .width(250.dp)
+                            .align(Alignment.CenterHorizontally),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.White,
+                        )
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Text(
+                                text = stringResource(R.string.create_account),
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.Black,
+                            )
+                        }
+                    }
+                    Spacer(
+                        modifier = Modifier
+                            .height(10.dp)
+                    )
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp)
                 ) {
-                    TextButton(onClick = {
-                        context.startActivity(Intent(context, New_Account::class.java))
-                        context
-                    }) {
-
-                    }
-                    Text(
-                        text = stringResource(R.string.new_session),
-                        fontSize = 13.sp,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.Black,
-                        textDecoration = TextDecoration.Underline,
+                    ClickableText(
+                        text = AnnotatedString(stringResource(R.string.sign_in2)),
+                        onClick = {
+                            navController.navigate("MainActivity")
+                        },
+                        style = TextStyle(
+                            fontSize = 13.sp,
+                            color = Color.Black,
+                            textDecoration = TextDecoration.Underline
+                        )
                     )
 
                 }
-            }
-            }
                 }
             }
+        }
+    }
 
-private val correos = mapOf(
-    "Jorge1805@gmail.com" to "CR7MESSI",
-    "Admin@gmail.com" to "Admin1",
-    "Sergio23@gmail.com" to "Sergio23",
-    "Admin2@gmail.com" to "Admin2",
-)
-private fun validUser(user: String, password: String): Boolean {
-    return correos[user] == password
-}
+
+
 
 
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun Greeting4Preview() {
+    val navController = rememberNavController()
     Proyecto_Plataformas_móvilesTheme {
-        Surface(modifier = Modifier.fillMaxSize() ,color = colorb ) {
-            Greeting()
-        }
+        Greeting4(navController = navController)
     }
 }
