@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "489741536318",
+    "project_id": "proyecto-plats",
+    "storage_bucket": "proyecto-plats.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489741536318:android:959f02e020d3632d27556f",
+        "android_client_info": {
+          "package_name": "com.example.proyecto_plataformas_mviles"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAU4xuOmqFrwcWlrNeuUclHr_afnPONTOo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

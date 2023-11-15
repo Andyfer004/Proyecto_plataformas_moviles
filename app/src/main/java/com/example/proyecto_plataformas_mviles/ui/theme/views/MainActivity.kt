@@ -1,5 +1,6 @@
 package com.example.proyecto_plataformas_mviles.ui.theme.views
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -60,10 +61,16 @@ import com.example.proyecto_plataformas_mviles.ui.theme.Proyecto_Plataformas_mó
 import com.example.proyecto_plataformas_mviles.ui.theme.colora
 import com.example.proyecto_plataformas_mviles.ui.theme.colorb
 import com.example.proyecto_plataformas_mviles.ui.theme.transparent
+import com.google.firebase.Firebase
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class MainActivity : ComponentActivity() {
+    private lateinit var auth : FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContent {
             Proyecto_Plataformas_móvilesTheme {
                 // A surface container using the 'background' color from the theme
@@ -72,6 +79,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        auth = Firebase.auth
     }
 }
 
@@ -234,12 +242,7 @@ fun Greeting(modifier: Modifier = Modifier, navController: NavController) {
 
                 Button(
                     onClick = {
-                        if (validUser(user,password)) {
-                            navController.navigate("SearchList")
-                        }
-                        else{
-                            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
-                        }
+                        loginUser(user, password, navController,context)
                     },
                     modifier = Modifier
                         .width(250.dp)
@@ -287,6 +290,9 @@ fun Greeting(modifier: Modifier = Modifier, navController: NavController) {
                 }
             }
 
+
+
+
 private val correos = mapOf(
     "Jorge1805@gmail.com" to "CR7MESSI",
     "Admin@gmail.com" to "Admin1",
@@ -296,7 +302,21 @@ private val correos = mapOf(
 private fun validUser(user: String, password: String): Boolean {
     return correos[user] == password
 }
+private fun loginUser(user: String, password: String, navController: NavController, context: Context) {
+    val auth = Firebase.auth
 
+    auth.signInWithEmailAndPassword(user, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Sign in success, update UI with the signed-in user's information
+                val user = auth.currentUser
+                navController.navigate("SearchList")
+            } else {
+                // If sign in fails, display a message to the user.
+                Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+            }
+        }
+}
 
 
 @Preview(showBackground = true)
