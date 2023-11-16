@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">La tienda chapina</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
     <string name="supermarkets_view">Selecciona un supermercado</string>
     <string name="select_product">Seleccionar un producto</string>
     <string name="end_list">Terminar lista</string>

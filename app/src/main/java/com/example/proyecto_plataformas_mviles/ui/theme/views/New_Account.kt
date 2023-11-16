@@ -57,6 +57,9 @@ import com.example.proyecto_plataformas_mviles.ui.theme.Proyecto_Plataformas_mó
 import com.example.proyecto_plataformas_mviles.ui.theme.colora
 import com.example.proyecto_plataformas_mviles.ui.theme.colorb
 import com.example.proyecto_plataformas_mviles.ui.theme.transparent
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class New_Account : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +72,7 @@ class New_Account : ComponentActivity() {
                 }
             }
         }
+        val auth = FirebaseAuth.getInstance()
     }
 }
 
@@ -81,7 +85,7 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
     var password by remember { mutableStateOf("") }
     var secondpassword by remember { mutableStateOf("") }
     val error = stringResource(R.string.error_user_password)
-
+    val auth = Firebase.auth
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -244,7 +248,7 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                             TextField(
                                 value = secondpassword,
                                 onValueChange = { newText3 ->
-                                    if (newText3.length <= 10) {
+                                    if (newText3.length <= 10 ) {
                                         secondpassword = newText3
                                     }
                                 },
@@ -277,17 +281,25 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                             if (user == "" || password == "" || secondpassword == "") {
                                 Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
                             } else {
-                                if (password == secondpassword) {
-                                    Toast.makeText(context, "Cuenta creada", Toast.LENGTH_SHORT)
-                                        .show()
-                                    navController.navigate("MainActivity")
+                                if (!user.endsWith("@gmail.com")) {
+                                    Toast.makeText(context, "El correo debe terminar con @gmail.com", Toast.LENGTH_SHORT).show()
+                                } else if (password.length < 6 || password.length > 10) {
+                                    Toast.makeText(context, "La contraseña debe tener entre 6 y 10 caracteres", Toast.LENGTH_SHORT).show()
+                                } else if (password == secondpassword) {
+                                    // Realizar la autenticación con Firebase
+                                    auth.createUserWithEmailAndPassword(user, password)
+                                        .addOnCompleteListener { task ->
+                                            if (task.isSuccessful) {
+                                                // Autenticación exitosa
+                                                Toast.makeText(context, "Cuenta creada", Toast.LENGTH_SHORT).show()
+                                                navController.navigate("MainActivity")
+                                            } else {
+                                                // Autenticación fallida
+                                                Toast.makeText(context, "Error en la autenticación: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
                                 } else {
-                                    Toast.makeText(
-                                        context,
-                                        "Contraseñas no coinciden",
-                                        Toast.LENGTH_SHORT
-                                    )
-                                        .show()
+                                    Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
                                 }
                             }
                         },

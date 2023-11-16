@@ -293,15 +293,7 @@ fun Greeting(modifier: Modifier = Modifier, navController: NavController) {
 
 
 
-private val correos = mapOf(
-    "Jorge1805@gmail.com" to "CR7MESSI",
-    "Admin@gmail.com" to "Admin1",
-    "Sergio23@gmail.com" to "Sergio23",
-    "Admin2@gmail.com" to "Admin2",
-)
-private fun validUser(user: String, password: String): Boolean {
-    return correos[user] == password
-}
+
 private fun loginUser(user: String, password: String, navController: NavController, context: Context) {
     val auth = Firebase.auth
 

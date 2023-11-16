@@ -91,7 +91,7 @@ fun Greeting7(navController: NavController, modifier: Modifier = Modifier) {
         Surface(
             modifier = modifier
                 .width(317.dp)
-                .height(550.dp)
+                .height(300.dp)
                 .alpha(0.8f)
                 .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp)),
             color = transparent,
@@ -101,26 +101,60 @@ fun Greeting7(navController: NavController, modifier: Modifier = Modifier) {
 
         }
         Spacer(modifier = Modifier.height(20.dp))
-        Surface(
-            modifier = modifier
-                .width(150.dp)
-                .height(50.dp)
-                .alpha(0.8f)
-                .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp)),
-            color = transparent,
-            shape = RoundedCornerShape(15.dp),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+        Row() {
+            Surface(
+                modifier = modifier
+                    .width(150.dp)
+                    .height(50.dp)
+                    .alpha(0.8f)
+                    .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp))
+                    .clickable(
+                        onClick = {
+                            navController.navigate("SearchProduct")
+                        }
+                    ),
+                color = transparent,
+                shape = RoundedCornerShape(15.dp),
             ) {
-                Text(
-                    text = stringResource(R.string.end_list),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Black,
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.cancel),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.Black,
+                    )
+                }
+            }
+            Surface(
+                modifier = modifier
+                    .width(150.dp)
+                    .height(50.dp)
+                    .alpha(0.8f)
+                    .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp))
+                    .clickable(
+                        onClick = {
+                            navController.navigate("SearchProduct")
+                        }
+                    ),
+                color = transparent,
+                shape = RoundedCornerShape(15.dp),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.save),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.Black,
+                    )
+                }
             }
         }
     }
