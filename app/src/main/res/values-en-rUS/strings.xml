@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">La tienda chapina</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="supermarkets_view">Select a supermarket</string>
+    <string name="welcome">Welcome</string>
+    <string name="search_list">Search list</string>
+    <string name="search_product">Search product</string>
+    <string name="selected_product">Selected product</string>
+    <string name="create_account">Create account</string>
+    <string name="correo">Email</string>
+    <string name="user">User</string>
+    <string name="password">Password</string>
+    <string name="password2">Repeat password</string>
+    <string name="error_user_password">" Incorrect username or password"</string>
+    <string name="sign_in">Log in</string>
+    <string name="new_session">Don\'t have an account? Click here</string>
+    <string name="sign_in2">Do you already have an account? Click here</string>
+    <string name="supermarket">Supermarket</string>
+    <string name="select_product">Select a product</string>
+    <string name="end_list">Finish list</string>
+    <string name="error_correo">The email must end with @gmail.com</string>
+    <string name="error_password">Password must be between 6 and 10 characters</string>
+    <string name="cuenta_creada">Account created</string>
+    <string name="error_coin_password">Passwords do not match</string>
+</resources>

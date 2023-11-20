@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">La tienda chapina</string>
+    <string name="app_name" translatable="false">La tienda chapina</string>
     <string name="save">Guardar</string>
     <string name="cancel">Cancelar</string>
     <string name="supermarkets_view">Selecciona un supermercado</string>
@@ -11,7 +11,7 @@
     <string name="selected_product">Producto seleccionado</string>
     <string name="create_account">Crear cuenta</string>
     <string name="correo">Correo electrónico</string>
-    <string name="lista_chapina">To lista chapina</string>
+    <string name="lista_chapina" translatable="false">Tu lista chapina</string>
     <string name="user">Usuario</string>
     <string name="password">Contraseña</string>
     <string name="password2">Repetir contraseña</string>
@@ -19,5 +19,9 @@
     <string name="sign_in">Iniciar sesión</string>
     <string name="new_session">¿No tienes cuenta?, presiona aquí</string>
     <string name="sign_in2">¿Ya tienes cuenta?, presiona aquí</string>
-    <string name="supermarket">Supermarket</string>
+    <string name="supermarket">Supermercado</string>
+    <string name="error_correo">El correo debe terminar con @gmail.com</string>
+    <string name="error_password">La contraseña debe tener entre 6 y 10 caracteres</string>
+    <string name="cuenta_creada">Cuenta creada</string>
+    <string name="error_coin_password">Las contraseñas no coinciden</string>
 </resources>
