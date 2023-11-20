@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,12 +18,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,10 +35,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -62,6 +62,7 @@ class SearchList : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun Greeting5(navController: NavController, modifier: Modifier = Modifier) {
+        var elementobuscado by remember { mutableStateOf("") }
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -91,22 +92,27 @@ class SearchList : ComponentActivity() {
                                 .padding(10.dp)
                         )
                         TextField(
-                            value = "",
-                            onValueChange = { },
+                            value = elementobuscado,
+                            onValueChange = { newText ->
+                                if (newText.length <= 30) {
+                                    elementobuscado = newText
+                                }
+                            },
                             maxLines = 1,
-                            label = { Text(stringResource(R.string.search_list)) },
+                            label = { Text(
+                                text = stringResource(R.string.search_list),
+                                color = Color.Black
+                            ) },
                             textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
                             modifier = Modifier
                                 .width(276.dp)
                                 .padding(0.dp)
                                 .background(Color.White),
-                            visualTransformation = PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions.Default.copy(
-                                keyboardType = KeyboardType.Password,
-                                imeAction = ImeAction.Next
+                                imeAction = ImeAction.Search
                             ),
                             colors = TextFieldDefaults.textFieldColors(
-                                containerColor = Color.Transparent,
+                                containerColor = transparent,
                             ),
                             singleLine = true,
                         )
@@ -117,6 +123,7 @@ class SearchList : ComponentActivity() {
                     modifier = modifier
                         .width(70.dp)
                         .height(50.dp)
+                        .padding(5.dp, 0.dp, 0.dp, 0.dp)
                         .alpha(0.8f)
                         .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp))
                         .clickable(
@@ -187,3 +194,12 @@ class SearchList : ComponentActivity() {
         }
     }
 
+@Composable
+@Preview(showBackground = true)
+fun DefaultPreview5() {
+    Proyecto_Plataformas_móvilesTheme {
+        Surface(modifier = Modifier.fillMaxSize(), color = colorb) {
+            Greeting5(navController = rememberNavController())
+        }
+    }
+}

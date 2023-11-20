@@ -24,6 +24,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -34,8 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -61,6 +64,7 @@ class SearchProduct : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
+    var elementoBuscado by remember { mutableStateOf("") }
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -90,22 +94,25 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
                             .padding(10.dp)
                     )
                     TextField(
-                        value = "",
-                        onValueChange = { },
+                        value = elementoBuscado,
+                        onValueChange = { newText ->
+                            elementoBuscado = newText
+                                        },
                         maxLines = 1,
-                        label = { Text(stringResource(R.string.search_product)) },
+                        label = { Text(
+                            text = stringResource(R.string.search_product),
+                            color = Color.Black
+                        ) },
                         textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
                         modifier = Modifier
                             .width(276.dp)
                             .padding(0.dp)
                             .background(Color.White),
-                        visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Password,
                             imeAction = ImeAction.Next
                         ),
                         colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color.Transparent,
+                            containerColor = transparent,
                         ),
                         singleLine = true,
                     )
@@ -117,12 +124,8 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
                     .width(70.dp)
                     .height(50.dp)
                     .alpha(0.8f)
-                    .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp))
-                    .clickable(
-                        onClick = {
-                            navController.navigate("MainActivity")
-                        }
-                    ),
+                    .padding(5.dp, 0.dp, 0.dp, 0.dp)
+                    .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp)),
                 color = transparent,
                 shape = RoundedCornerShape(15.dp),
             ) {
@@ -143,7 +146,7 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
         )
         Surface(
             modifier = modifier
-                .width(317.dp)
+                .width(300.dp)
                 .height(50.dp)
                 .alpha(0.8f)
                 .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp)),
@@ -154,10 +157,9 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-
                 Text(
                     text = stringResource(R.string.select_product),
-                    fontSize = 20.sp,
+                    fontSize = 17.sp,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.bodyLarge,
                     color = Color.Black,
@@ -171,7 +173,7 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
         )
         Surface(
             modifier = modifier
-                .width(317.dp)
+                .width(300.dp)
                 .height(480.dp)
                 .alpha(0.8f)
                 .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp)),
@@ -239,6 +241,15 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
                 )
             }
         }
+    }
+}
 
+@Composable
+@Preview(showBackground = true)
+fun DefaultPreview6() {
+    Proyecto_Plataformas_móvilesTheme {
+        Surface(modifier = Modifier.fillMaxSize(), color = colorb) {
+            Greeting6(navController = rememberNavController())
+        }
     }
 }

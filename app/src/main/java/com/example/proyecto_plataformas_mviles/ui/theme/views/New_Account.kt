@@ -86,6 +86,11 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
     var secondpassword by remember { mutableStateOf("") }
     val error = stringResource(R.string.error_user_password)
     val auth = Firebase.auth
+    val errorEmail = stringResource(R.string.error_correo)
+    val errorPassword = stringResource(R.string.error_password)
+    val cuentaCreada = stringResource(R.string.cuenta_creada)
+    val errorCoinPassword = stringResource(R.string.error_coin_password)
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -135,7 +140,7 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                 Surface(
                     modifier = Modifier
                         .width(276.dp)
-                        .height(60.dp)
+                        .height(70.dp)
                         .border(1.dp, Color.Black, RoundedCornerShape(15.dp)),
                     shape = RoundedCornerShape(15.dp),
                     color = Color.White,
@@ -147,7 +152,6 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                             tint = Color.Black,
                             modifier = Modifier
                                 .padding(10.dp),
-
                             )
 
                         TextField(
@@ -158,20 +162,26 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                                 }
                             },
                             singleLine = true,
-                            placeholder = { Text(stringResource(R.string.correo)) },
-                            label = { Text(stringResource(R.string.user)) },
+                            placeholder = { Text(
+                                text = stringResource(R.string.correo),
+                                color = Color.Black
+                            ) },
+                            label = { Text(
+                                text = stringResource(R.string.user),
+                                color = Color.Black) },
                             textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
                             modifier = Modifier
                                 .width(276.dp)
-                                .padding(0.dp)
+                                .padding(0.dp, 5.dp, 5.dp, 5.dp)
                                 .background(Color.White),
                             colors = TextFieldDefaults.textFieldColors(
-                                containerColor = Color(218, 215, 205)
+                                containerColor = Color.White
                             ),
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Email,
                                 imeAction = ImeAction.Next
-                            )
+                            ),
+                            shape = RoundedCornerShape(15.dp),
                         )
 
                     }
@@ -183,7 +193,7 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                 Surface(
                     modifier = Modifier
                         .width(276.dp)
-                        .height(60.dp)
+                        .height(70.dp)
                         .border(1.dp, Color.Black, RoundedCornerShape(15.dp)),
                     shape = RoundedCornerShape(15.dp),
                     color = Color.White,
@@ -205,11 +215,11 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                                 }
                             },
                             maxLines = 1,
-                            label = { Text(stringResource(R.string.password)) },
+                            label = { Text(text = stringResource(R.string.password), color = Color.Black) },
                             textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
                             modifier = Modifier
                                 .width(276.dp)
-                                .padding(0.dp)
+                                .padding(0.dp, 5.dp, 5.dp, 5.dp)
                                 .background(Color.White),
                             visualTransformation = PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions.Default.copy(
@@ -217,9 +227,10 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                                 imeAction = ImeAction.Next
                             ),
                             colors = TextFieldDefaults.textFieldColors(
-                                containerColor = Color(218, 215, 205)
+                                containerColor = Color.White
                             ),
                             singleLine = true,
+                            shape = RoundedCornerShape(15.dp),
                         )
 
                     }
@@ -231,7 +242,7 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                     Surface(
                         modifier = Modifier
                             .width(276.dp)
-                            .height(60.dp)
+                            .height(70.dp)
                             .border(1.dp, Color.Black, RoundedCornerShape(15.dp)),
                         shape = RoundedCornerShape(15.dp),
                         color = Color.White,
@@ -253,11 +264,13 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                                     }
                                 },
                                 maxLines = 1,
-                                label = { Text(stringResource(R.string.password2)) },
+                                label = { Text(
+                                    text = stringResource(R.string.password2),
+                                    color = Color.Black) },
                                 textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
                                 modifier = Modifier
                                     .width(276.dp)
-                                    .padding(0.dp)
+                                    .padding(0.dp, 5.dp, 5.dp, 5.dp)
                                     .background(Color.White),
                                 visualTransformation = PasswordVisualTransformation(),
                                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -265,9 +278,10 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                                     imeAction = ImeAction.Next
                                 ),
                                 colors = TextFieldDefaults.textFieldColors(
-                                    containerColor = Color(218, 215, 205)
+                                    containerColor = Color.White
                                 ),
                                 singleLine = true,
+                                shape = RoundedCornerShape(15.dp),
                             )
                         }
                     }
@@ -275,23 +289,22 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                         modifier = Modifier
                             .height(70.dp)
                     )
-
                     Button(
                         onClick = {
                             if (user == "" || password == "" || secondpassword == "") {
                                 Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
                             } else {
                                 if (!user.endsWith("@gmail.com")) {
-                                    Toast.makeText(context, "El correo debe terminar con @gmail.com", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, errorEmail, Toast.LENGTH_SHORT).show()
                                 } else if (password.length < 6 || password.length > 10) {
-                                    Toast.makeText(context, "La contraseña debe tener entre 6 y 10 caracteres", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, errorPassword, Toast.LENGTH_SHORT).show()
                                 } else if (password == secondpassword) {
                                     // Realizar la autenticación con Firebase
                                     auth.createUserWithEmailAndPassword(user, password)
                                         .addOnCompleteListener { task ->
                                             if (task.isSuccessful) {
                                                 // Autenticación exitosa
-                                                Toast.makeText(context, "Cuenta creada", Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(context, cuentaCreada, Toast.LENGTH_SHORT).show()
                                                 navController.navigate("MainActivity")
                                             } else {
                                                 // Autenticación fallida
@@ -299,7 +312,7 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                                             }
                                         }
                                 } else {
-                                    Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, errorCoinPassword, Toast.LENGTH_SHORT).show()
                                 }
                             }
                         },
@@ -344,10 +357,10 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
                     )
 
                 }
-                }
             }
         }
     }
+}
 
 
 
@@ -357,8 +370,9 @@ fun Greeting4(modifier: Modifier = Modifier,navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun Greeting4Preview() {
-    val navController = rememberNavController()
     Proyecto_Plataformas_móvilesTheme {
-        Greeting4(navController = navController)
+        Surface(modifier = Modifier.fillMaxSize() ,color = colorb ) {
+            Greeting4(navController = rememberNavController() )
+        }
     }
 }

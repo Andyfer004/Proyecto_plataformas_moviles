@@ -1,7 +1,6 @@
 package com.example.proyecto_plataformas_mviles.ui.theme.views
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -27,7 +26,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -74,7 +72,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Proyecto_Plataformas_móvilesTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize() ,color = colorb ) {
+                Surface(modifier = Modifier.fillMaxSize(), color = colorb ) {
                     Navigation()
                 }
             }
@@ -89,7 +87,6 @@ fun Greeting(modifier: Modifier = Modifier, navController: NavController) {
     val context = LocalContext.current
     var user by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val error = stringResource(R.string.error_user_password)
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -147,7 +144,7 @@ fun Greeting(modifier: Modifier = Modifier, navController: NavController) {
                 Surface(
                     modifier = Modifier
                         .width(276.dp)
-                        .height(60.dp)
+                        .height(70.dp)
                         .border(1.dp, Color.Black, RoundedCornerShape(15.dp)),
                     shape = RoundedCornerShape(15.dp),
                     color = Color.White,
@@ -159,7 +156,6 @@ fun Greeting(modifier: Modifier = Modifier, navController: NavController) {
                             tint = Color.Black,
                             modifier = Modifier
                                 .padding(10.dp),
-
                             )
 
                         TextField(
@@ -170,19 +166,26 @@ fun Greeting(modifier: Modifier = Modifier, navController: NavController) {
                                 }
                             },
                             singleLine = true,
-                            placeholder = { Text(stringResource(R.string.correo)) },
-                            label = { Text(stringResource(R.string.user)) },
+                            placeholder = { Text(
+                                stringResource(R.string.correo),
+                                color = Color.Black,
+                            ) },
+                            label = { Text(
+                                text = stringResource(R.string.user),
+                                color = Color.Black,
+                                ) },
                             textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
                             modifier = Modifier
                                 .width(276.dp)
-                                .padding(0.dp)
+                                .padding(0.dp, 5.dp, 5.dp, 5.dp)
                                 .background(Color.White),
                             colors = TextFieldDefaults.textFieldColors(
-                                containerColor = Color(218, 215, 205)
+                                containerColor = Color.White
                             ),
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Email,
-                                imeAction = ImeAction.Next)
+                                imeAction = ImeAction.Next),
+                            shape = RoundedCornerShape(15.dp),
                         )
 
                     }
@@ -194,7 +197,7 @@ fun Greeting(modifier: Modifier = Modifier, navController: NavController) {
                 Surface(
                     modifier = Modifier
                         .width(276.dp)
-                        .height(60.dp)
+                        .height(70.dp)
                         .border(1.dp, Color.Black, RoundedCornerShape(15.dp)),
                     shape = RoundedCornerShape(15.dp),
                     color = Color.White,
@@ -216,11 +219,14 @@ fun Greeting(modifier: Modifier = Modifier, navController: NavController) {
                                 }
                             },
                             maxLines = 1,
-                            label = { Text(stringResource(R.string.password)) },
+                            label = { Text(
+                                text = stringResource(R.string.password),
+                                color = Color.Black,
+                            ) },
                             textStyle = TextStyle(fontSize = 15.sp, color = Color.Black),
                             modifier = Modifier
                                 .width(276.dp)
-                                .padding(0.dp)
+                                .padding(0.dp, 5.dp, 5.dp, 5.dp)
                                 .background(Color.White),
                             visualTransformation = PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions.Default.copy(
@@ -228,9 +234,10 @@ fun Greeting(modifier: Modifier = Modifier, navController: NavController) {
                                 imeAction = ImeAction.Next
                             ),
                             colors = TextFieldDefaults.textFieldColors(
-                                containerColor = Color(218, 215, 205)
+                                containerColor = Color.White
                             ),
                             singleLine = true,
+                            shape = RoundedCornerShape(15.dp),
                         )
 
                     }
@@ -243,6 +250,7 @@ fun Greeting(modifier: Modifier = Modifier, navController: NavController) {
                 Button(
                     onClick = {
                         loginUser(user, password, navController,context)
+
                     },
                     modifier = Modifier
                         .width(250.dp)
@@ -286,9 +294,9 @@ fun Greeting(modifier: Modifier = Modifier, navController: NavController) {
 
                 }
             }
-            }
-                }
-            }
+        }
+    }
+}
 
 
 
@@ -301,7 +309,6 @@ private fun loginUser(user: String, password: String, navController: NavControll
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // Sign in success, update UI with the signed-in user's information
-                val user = auth.currentUser
                 navController.navigate("SearchList")
             } else {
                 // If sign in fails, display a message to the user.
