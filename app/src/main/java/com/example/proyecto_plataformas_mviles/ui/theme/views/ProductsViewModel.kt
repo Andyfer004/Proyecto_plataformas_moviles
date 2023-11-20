@@ -9,15 +9,16 @@ import com.zezzi.eventzezziapp.data.repository.WalmartRepository
 
 class ProductsViewModel(private val repository: WalmartRepository = WalmartRepository()) : ViewModel() {
 
-    suspend fun searchProducts(query: String, storeId: String): List<ProductInfo>? {
+    suspend fun searchProducts(): List<ProductInfo>? {
         return withContext(Dispatchers.IO) {
             try {
                 // Llamar a la función suspendida en el repositorio para obtener los datos.
-                val response = repository.searchProducts(query, storeId)
+                val response = repository.searchProducts()
                 // Agregar registro de depuración para verificar la respuesta
                 Log.d("ProductsViewModel", "Response: $response")
                 response
             } catch (e: Exception) {
+                Log.e("ProductsViewModel", "Error fetching products", e)
                 // Manejar errores si es necesario.
                 null
             }

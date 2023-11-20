@@ -3,6 +3,7 @@ package com.example.proyecto_plataformas_mviles.ui.theme.views
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -79,7 +81,7 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
 
     LaunchedEffect(Unit) {
         try {
-            val response = productsViewModel.searchProducts("Coffee", "1634")
+            val response = productsViewModel.searchProducts()
             rememberedProducts.value = response.orEmpty()
             isLoading.value = false
         } catch (e: Exception) {
@@ -205,6 +207,7 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
         {
             rememberedProducts.value.forEach { product ->
                 Text(text = product.title)
+
 
             }
             Box(

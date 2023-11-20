@@ -10,14 +10,14 @@ class WalmartWebService {
 
     init {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://serpapi.com/api/")
+            .baseUrl("https://serpapi.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         api = retrofit.create(WalmartApi::class.java)
     }
 
-    suspend fun searchProducts(query: String, storeId: String): CoffeeResponse {
-        return api.searchProducts(query = query, storeId = storeId)
+    suspend fun searchProducts(): CoffeeResponse {
+        return api.searchProducts()
     }
 }
