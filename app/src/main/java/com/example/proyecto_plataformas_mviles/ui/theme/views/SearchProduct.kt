@@ -3,7 +3,6 @@ package com.example.proyecto_plataformas_mviles.ui.theme.views
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,10 +13,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -72,7 +72,7 @@ class SearchProduct : ComponentActivity() {
 @Composable
 fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
     var elementoBuscado by remember { mutableStateOf("") }
-
+    val scrollState = rememberScrollState()
     val rememberedProducts: MutableState<List<ProductInfo>> =
         remember { mutableStateOf(emptyList<ProductInfo>()) }
     val isLoading: MutableState<Boolean> = remember { mutableStateOf(true) }
@@ -89,6 +89,7 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
             // Manejar errores si es necesario.
         }
     }
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -117,6 +118,8 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
                             .height(50.dp)
                             .padding(10.dp)
                     )
+
+
                     TextField(
                         value = elementoBuscado,
                         onValueChange = { newText ->
@@ -206,9 +209,13 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
         )
         {
             rememberedProducts.value.forEach { product ->
-                Text(text = product.title)
-
-
+                Surface(
+                    modifier = Modifier
+                        .verticalScroll(scrollState),
+                    color = Color(33, 150, 243, 255)
+                ) {
+                    Text(text = product.title)
+                }
             }
             Box(
                 modifier = Modifier.fillMaxSize(),
