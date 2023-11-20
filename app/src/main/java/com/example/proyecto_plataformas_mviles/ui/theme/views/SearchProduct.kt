@@ -24,6 +24,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,12 +43,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyecto_plataformas_mviles.R
 import com.example.proyecto_plataformas_mviles.ui.theme.Proyecto_Plataformas_móvilesTheme
 import com.example.proyecto_plataformas_mviles.ui.theme.colorb
 import com.example.proyecto_plataformas_mviles.ui.theme.transparent
+import com.zezzi.eventzezziapp.data.repository.ProductInfo
+import com.zezzi.eventzezziapp.ui.products.ProductsViewModel
 
 class SearchProduct : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +70,23 @@ class SearchProduct : ComponentActivity() {
 @Composable
 fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
     var elementoBuscado by remember { mutableStateOf("") }
+
+    val rememberedProducts: MutableState<List<ProductInfo>> =
+        remember { mutableStateOf(emptyList<ProductInfo>()) }
+    val isLoading: MutableState<Boolean> = remember { mutableStateOf(true) }
+    val productsViewModel: ProductsViewModel =
+        viewModel() // Debes crear un ViewModel adecuado para gestionar los platos de esta categoría
+
+    LaunchedEffect(Unit) {
+        try {
+            val response = productsViewModel.searchProducts("Coffee", "1634")
+            rememberedProducts.value = response.orEmpty()
+            isLoading.value = false
+        } catch (e: Exception) {
+            isLoading.value = false
+            // Manejar errores si es necesario.
+        }
+    }
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -181,6 +203,10 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
             shape = RoundedCornerShape(15.dp),
         )
         {
+            rememberedProducts.value.forEach { product ->
+                Text(text = product.title)
+
+            }
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.BottomEnd
