@@ -1,5 +1,6 @@
 package com.example.proyecto_plataformas_mviles.navigation
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -11,7 +12,6 @@ import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting4
 import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting5
 import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting6
 import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting7
-import com.example.proyecto_plataformas_mviles.ui.theme.views.Supermarket
 
 @Composable
 fun Navigation(modifier: Modifier = Modifier) {
@@ -34,14 +34,21 @@ fun Navigation(modifier: Modifier = Modifier) {
         composable("New_Account") {
             Greeting4(navController = navController) // Navigate to the Supermarket
         }
-        composable("SearchList"){
+        composable("SearchList") {
             Greeting5(navController = navController)
         }
-        composable("SearchProduct"){
+        composable("SearchProduct") {
             Greeting6(navController = navController)
         }
-        composable("SelectedProduct"){
-            Greeting7(navController = navController)
+        composable(route = "SelectedProduct/{title}/{price}/{image}") { backStackEntry ->
+            val title: String? = backStackEntry.arguments?.getString("title")
+            val price: String? = backStackEntry.arguments?.getString("price")
+            val image: String? = backStackEntry.arguments?.getString("image")
+            if (title != null && price != null && image != null) {
+                Greeting7(navController = navController, title = title, price = price, image = image)
+            }
         }
+
+
     }
 }

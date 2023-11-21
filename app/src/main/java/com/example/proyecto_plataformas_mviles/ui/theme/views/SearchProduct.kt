@@ -1,8 +1,11 @@
 package com.example.proyecto_plataformas_mviles.ui.theme.views
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,13 +14,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,12 +49,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
 import com.example.proyecto_plataformas_mviles.R
 import com.example.proyecto_plataformas_mviles.ui.theme.Proyecto_Plataformas_móvilesTheme
 import com.example.proyecto_plataformas_mviles.ui.theme.colorb
@@ -208,84 +217,140 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
             shape = RoundedCornerShape(15.dp),
         )
         {
-            rememberedProducts.value.forEach { product ->
-                Surface(
-                    modifier = Modifier
-                        .verticalScroll(scrollState),
-                    color = Color(33, 150, 243, 255)
-                ) {
-                    Text(text = product.title)
-                }
-            }
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomEnd
+            Column(
+                modifier = Modifier
+                    .verticalScroll(scrollState)
             ) {
-                Surface(
-                    modifier = modifier
-                        .width(80.dp)
-                        .height(80.dp)
-                        .alpha(0.8f)
-                        .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp))
-                        .padding(10.dp)
-                        .clickable(
-                            onClick = {
-                                navController.navigate("SelectedProduct")
-                            }
-                        ),
-                    color = Color.White,
-                    shape = RoundedCornerShape(15.dp),
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_playlist_add_24),
-                        contentDescription = null,
+                rememberedProducts.value.forEach { product ->
+                    Button(
+                        onClick = {
+                            val cleanedUrl = Uri.encode(product.thumbnail.toString())
+                            navController.navigate("SelectedProduct/${product.title}/${product.offerPrice.toString()}/${cleanedUrl}")
+                            Log.d("url",cleanedUrl)
+                            // Aquí puedes poner la acción que se ejecutará cuando se haga clic en el botón.
+                        },
                         modifier = Modifier
-                            .width(80.dp)
-                            .height(80.dp)
-                            .padding(10.dp),
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                            .shadow(
+                                elevation = 10.dp,
+                                shape = RoundedCornerShape(20.dp),
+                            ),
+                        shape = RoundedCornerShape(20.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp), // Espaciado entre elementos
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
 
-                        )
+                            // Imagen a la izquierda
+                            Image(
+                                painter = rememberImagePainter(data = product.thumbnail),
+                                contentDescription = null, // Agrega descripción apropiada
+                                modifier = Modifier
+                                    .size(80.dp) // Tamaño de la imagen
+                            )
+                            Column {
+
+                                // Categoría a la derecha
+                                Text(
+                                    text = product.title,
+                                    modifier = Modifier
+                                        .padding(start = 16.dp)
+                                        .fillMaxWidth(), // Espaciado entre imagen y texto
+                                    style = TextStyle(fontSize = 10.sp), // Tamaño de texto apropiado
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = Color.Black
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = product.offerPrice.toString() + " $",
+                                    modifier = Modifier
+                                        .padding(start = 16.dp)
+                                        .fillMaxWidth(), // Espaciado entre imagen y texto
+                                    style = TextStyle(fontSize = 15.sp), // Tamaño de texto apropiado
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = Color.Black
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.BottomEnd
+                        ) {
+                            Surface(
+                                modifier = modifier
+                                    .width(80.dp)
+                                    .height(80.dp)
+                                    .alpha(0.8f)
+                                    .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp))
+                                    .padding(10.dp)
+                                    .clickable(
+                                        onClick = {
+                                            navController.navigate("SelectedProduct")
+                                        }
+                                    ),
+                                color = Color.White,
+                                shape = RoundedCornerShape(15.dp),
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.baseline_playlist_add_24),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .width(80.dp)
+                                        .height(80.dp)
+                                        .padding(10.dp),
+
+                                    )
+                            }
+                        }
+
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Surface(
+                        modifier = modifier
+                            .width(150.dp)
+                            .height(50.dp)
+                            .alpha(0.8f)
+                            .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp))
+                            .clickable(
+                                onClick = {
+                                    navController.navigate("SearchList")
+                                }
+                            ),
+                        color = transparent,
+                        shape = RoundedCornerShape(15.dp),
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = stringResource(R.string.end_list),
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.Black,
+                            )
+                        }
+                    }
                 }
             }
 
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        Surface(
-            modifier = modifier
-                .width(150.dp)
-                .height(50.dp)
-                .alpha(0.8f)
-                .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp))
-                .clickable(
-                    onClick = {
-                        navController.navigate("SearchList")
+            @Composable
+            @Preview(showBackground = true)
+            fun DefaultPreview6() {
+                Proyecto_Plataformas_móvilesTheme {
+                    Surface(modifier = Modifier.fillMaxSize(), color = colorb) {
+                        Greeting6(navController = rememberNavController())
                     }
-                ),
-            color = transparent,
-            shape = RoundedCornerShape(15.dp),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.end_list),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Black,
-                )
+                }
             }
-        }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun DefaultPreview6() {
-    Proyecto_Plataformas_móvilesTheme {
-        Surface(modifier = Modifier.fillMaxSize(), color = colorb) {
-            Greeting6(navController = rememberNavController())
-        }
-    }
-}
