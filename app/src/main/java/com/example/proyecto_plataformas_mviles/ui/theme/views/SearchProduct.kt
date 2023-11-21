@@ -226,7 +226,6 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
                         onClick = {
                             val cleanedUrl = Uri.encode(product.thumbnail.toString())
                             navController.navigate("SelectedProduct/${product.title}/${product.offerPrice.toString()}/${cleanedUrl}")
-                            Log.d("url",cleanedUrl)
                             // Aquí puedes poner la acción que se ejecutará cuando se haga clic en el botón.
                         },
                         modifier = Modifier

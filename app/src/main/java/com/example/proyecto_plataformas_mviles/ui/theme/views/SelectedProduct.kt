@@ -1,5 +1,6 @@
 package com.example.proyecto_plataformas_mviles.ui.theme.views
 
+import InfoViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
@@ -66,6 +68,7 @@ class SelectedProduct : ComponentActivity() {
 fun Greeting7(title: String,price : String, image : String,navController: NavController, modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
     var quantity by remember { mutableStateOf(1) }
+    val viewModel: InfoViewModel = viewModel()
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -279,6 +282,14 @@ fun Greeting7(title: String,price : String, image : String,navController: NavCon
                         .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp))
                         .clickable(
                             onClick = {
+                                viewModel.guardarDatosEnFirebase(
+                                    Infodb(
+                                        title = title,
+                                        quantity = quantity,
+                                        image = image,
+                                        price = price
+                                    )
+                                )
                                 navController.navigate("SearchProduct")
                             }
                         ),
@@ -301,6 +312,13 @@ fun Greeting7(title: String,price : String, image : String,navController: NavCon
             }
         }
     }
+data class Infodb(
+    val title: String,
+    val quantity: Int,
+    val image: String,
+    val price: String
+)
+
 
 
 
