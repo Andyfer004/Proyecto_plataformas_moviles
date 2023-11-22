@@ -65,36 +65,49 @@ class InfoViewModel : ViewModel() {
         user?.let { currentUser ->
             val userId = currentUser.uid
 
-            obtenerUltimaColeccion(userId).addOnSuccessListener { ultimaColeccionNombre ->
-                val nuevoNumero = (ultimaColeccionNombre?.toIntOrNull() ?: 0) + 1
+            // Usar transacciones para manejar correctamente las condiciones de carrera
+            val userDocumentRef = db.collection("users").document(userId)
+            db.runTransaction { transaction ->
+                val snapshot = transaction.get(userDocumentRef)
+
+                // Verificar si el documento del usuario existe y actuar en consecuencia
+                val ultimaColeccionNumero = if (snapshot.exists()) {
+                    snapshot.getLong("ultimaColeccionNumero") ?: 0
+                } else {
+                    // Si el documento no existe, inicializa el contador y crea el documento
+                    transaction.set(userDocumentRef, hashMapOf("ultimaColeccionNumero" to 0))
+                    0
+                }
+
+                val nuevoNumero = ultimaColeccionNumero + 1
                 val nuevaColeccionNombre = "lista_$nuevoNumero"
 
-                // Crear una colección de configuración o metadata para la nueva colección
                 val configColeccion = hashMapOf(
                     "nombre" to nuevaColeccionNombre,
                     // Otros campos de configuración o metadata
                 )
 
-                // Crear la colección de configuración en la colección "listas" dentro del usuario
-                db.collection("users").document(userId)
-                    .collection("listas").document(nuevaColeccionNombre)
-                    .set(configColeccion)
-                    .addOnSuccessListener {
-                        // La nueva colección se ha creado con éxito
-                        println("Nueva colección creada: $nuevaColeccionNombre")
-                    }
-                    .addOnFailureListener { e ->
-                        // Error al crear la nueva colección
-                        println("Error al crear la nueva colección: $e")
-                    }
+                // Crear la nueva colección
+                transaction.set(userDocumentRef.collection("colecciones").document(nuevaColeccionNombre), configColeccion)
+                // Actualizar el número de la última colección
+                transaction.update(userDocumentRef, "ultimaColeccionNumero", nuevoNumero)
+
+                nuevaColeccionNombre
+            }.addOnSuccessListener { nuevaColeccionNombre ->
+                println("Nueva colección creada: $nuevaColeccionNombre")
+            }.addOnFailureListener { e ->
+                println("Error al crear la nueva colección: $e")
             }
         }
     }
 
+
+
+
     // Método para obtener el nombre de la última colección en la colección "listas" dentro del usuario
     private fun obtenerUltimaColeccion(userId: String) =
         db.collection("users").document(userId)
-            .collection("listas")
+            .collection("colecciones")
             .orderBy("nombre", Query.Direction.DESCENDING)
             .limit(1)
             .get()
@@ -114,7 +127,7 @@ class InfoViewModel : ViewModel() {
 
         try {
             val querySnapshot = db.collection("users").document(userId)
-                .collection("listas")
+                .collection("colecciones")
                 .get()
                 .await()
 
