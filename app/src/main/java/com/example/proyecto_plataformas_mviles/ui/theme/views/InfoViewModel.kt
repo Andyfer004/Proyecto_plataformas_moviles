@@ -1,11 +1,18 @@
 import androidx.lifecycle.ViewModel
 import com.example.proyecto_plataformas_mviles.ui.theme.views.Infodb
+import com.example.proyecto_plataformas_mviles.ui.theme.views.Infodb2
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.toObject
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class InfoViewModel : ViewModel() {
 
@@ -52,20 +59,7 @@ class InfoViewModel : ViewModel() {
 
 
 
-    private fun obtenerListaActual(userId: String): Task<String?> {
-        return db.collection("users").document(userId)
-            .collection("listas")
-            .orderBy("fechaCreacion", Query.Direction.DESCENDING)
-            .limit(1)
-            .get()
-            .continueWith { task ->
-                if (!task.result.isEmpty) {
-                    task.result.documents[0].id
-                } else {
-                    null
-                }
-            }
-    }
+
     fun crearNuevaColeccion() {
         val user = auth.currentUser
         user?.let { currentUser ->
@@ -128,6 +122,31 @@ class InfoViewModel : ViewModel() {
 
         return nombresColecciones
     }
+    suspend fun obtenerDatosDeProductos(listName: String): List<Infodb2> = withContext(Dispatchers.IO) {
+        val dataList = mutableListOf<Infodb2>()
+
+        try {
+            val querySnapshot = db.collection("users").document(userId!!)
+                .collection("colecciones").document(listName)
+                .collection("items")
+                .get()
+                .await()
+
+            for (document in querySnapshot.documents) {
+                document.toObject(Infodb2::class.java)?.let { infodb2 ->
+                    dataList.add(infodb2)
+                }
+            }
+        } catch (e: Exception) {
+            println("Error al obtener los datos de productos: $e")
+        }
+
+        return@withContext dataList
+    }
+
+
+
+
 
 
 }

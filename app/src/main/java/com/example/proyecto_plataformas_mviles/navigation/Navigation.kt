@@ -2,6 +2,7 @@ package com.example.proyecto_plataformas_mviles.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -48,8 +49,14 @@ fun Navigation(modifier: Modifier = Modifier) {
                 Greeting7(navController = navController, title = title, price = price, image = image)
             }
         }
-        composable("ListProducts") {
-            Greeting8(navController = navController)
+
+        composable(route = "ListProducts/{listName}") { backStackEntry ->
+            val listName = backStackEntry.arguments?.getString("listName")
+            if (listName != null) {
+                Greeting8(listName= listName, navController = navController)
+            } else {
+                // Manejo del caso en que listName sea null
+            }
         }
 
 

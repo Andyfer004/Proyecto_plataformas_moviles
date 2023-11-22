@@ -1,5 +1,6 @@
 package com.example.proyecto_plataformas_mviles.ui.theme.views
 
+import InfoViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -22,12 +25,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -35,13 +42,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
 import com.example.proyecto_plataformas_mviles.R
 import com.example.proyecto_plataformas_mviles.ui.theme.Proyecto_Plataformas_móvilesTheme
 import com.example.proyecto_plataformas_mviles.ui.theme.colora
 import com.example.proyecto_plataformas_mviles.ui.theme.colorb
 import com.example.proyecto_plataformas_mviles.ui.theme.transparent
+import kotlinx.coroutines.launch
 
 class ListProducts : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +59,7 @@ class ListProducts : ComponentActivity() {
             Proyecto_Plataformas_móvilesTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = colorb) {
-                    Greeting8(navController = rememberNavController())
+
                 }
             }
         }
@@ -58,8 +67,15 @@ class ListProducts : ComponentActivity() {
 }
 
 @Composable
-fun Greeting8(navController: NavController, modifier: Modifier = Modifier) {
+fun Greeting8( listName: String,navController: NavController, modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
+    val productos = remember { mutableStateOf<List<Infodb2>>(emptyList()) }
+    val coroutineScope = rememberCoroutineScope()
+    val InfoViewModel: InfoViewModel = viewModel()
+
+    LaunchedEffect(listName) {
+        productos.value = InfoViewModel.obtenerDatosDeProductos(listName)
+    }
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -73,7 +89,7 @@ fun Greeting8(navController: NavController, modifier: Modifier = Modifier) {
                 .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp)),
             color = transparent,
             shape = RoundedCornerShape(15.dp),
-        ){
+        ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -103,79 +119,81 @@ fun Greeting8(navController: NavController, modifier: Modifier = Modifier) {
             shape = RoundedCornerShape(15.dp),
         )
         {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(scrollState)
-            ) {
-                //Lista de los productos
-                //remeberedProductos.value.forEach { product ->
-                Surface (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp)
-                        .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp)), // Espaciado entre elementos
-                    shape = RoundedCornerShape(15.dp),
-                    color = colora,
-                ) {
-                    Row(
+            LazyColumn {
+                items(productos.value) { producto ->
+                    //Lista de los productos
+                    //remeberedProductos.value.forEach { product ->
+                    Surface(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(12.dp), // Espaciado entre elementos
-                        verticalAlignment = Alignment.CenterVertically
+                            .padding(12.dp)
+                            .shadow(
+                                elevation = 0.dp,
+                                shape = RoundedCornerShape(15.dp)
+                            ), // Espaciado entre elementos
+                        shape = RoundedCornerShape(15.dp),
+                        color = Color.White,
                     ) {
-
-                        // Imagen a la izquierda
-                        Image(
-                            painter = painterResource(id = R.drawable.img),
-                            contentDescription = null, // Agrega descripción apropiada
+                        Row(
                             modifier = Modifier
-                                .size(80.dp) // Tamaño de la imagen
-                        )
-                        Column {
-                            // Categoría a la derecha
-                            Text(
-                                text = stringResource(id = R.string.titleProduct) + ": Café",
+                                .fillMaxWidth()
+                                .padding(12.dp), // Espaciado entre elementos
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+
+                            // Imagen a la izquierda
+                            Image(
+                                painter = rememberImagePainter(producto.image),
+                                contentDescription = null, // Agrega descripción apropiada
                                 modifier = Modifier
-                                    .padding(start = 14.dp)
-                                    .fillMaxWidth(), // Espaciado entre imagen y texto
-                                style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
-                                color = Color.Black
+                                    .size(80.dp) // Tamaño de la imagen
                             )
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Text(
-                                text = stringResource(id = R.string.precio) + ": 200 $",
-                                modifier = Modifier
-                                    .padding(start = 14.dp)
-                                    .fillMaxWidth(), // Espaciado entre imagen y texto
-                                style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
-                                color = Color.Black
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Text(
-                                text = stringResource(id = R.string.cantidad) + ": 2",
-                                modifier = Modifier
-                                    .padding(start = 14.dp)
-                                    .fillMaxWidth(), // Espaciado entre imagen y texto
-                                style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
-                                color = Color.Black
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Text(
-                                text = stringResource(id = R.string.total) + ": 400 $",
-                                modifier = Modifier
-                                    .padding(start = 14.dp)
-                                    .fillMaxWidth(), // Espaciado entre imagen y texto
-                                style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
-                                color = Color.Black
-                            )
+                            Column {
+                                // Categoría a la derecha
+                                Text(
+                                    text = producto.title,
+                                    modifier = Modifier
+                                        .padding(start = 14.dp)
+                                        .fillMaxWidth(), // Espaciado entre imagen y texto
+                                    style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = Color.Black
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = producto.price,
+                                    modifier = Modifier
+                                        .padding(start = 14.dp)
+                                        .fillMaxWidth(), // Espaciado entre imagen y texto
+                                    style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = Color.Black
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = producto.quantity.toString(),
+                                    modifier = Modifier
+                                        .padding(start = 14.dp)
+                                        .fillMaxWidth(), // Espaciado entre imagen y texto
+                                    style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = Color.Black
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = stringResource(id = R.string.total) + " ${(producto.quantity * producto.price.toDouble()).toFloat()}"+ " $",
+                                    modifier = Modifier
+                                        .padding(start = 14.dp)
+                                        .fillMaxWidth(), // Espaciado entre imagen y texto
+                                    style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = Color.Black
+                                )
+                            }
                         }
                     }
                 }
@@ -213,13 +231,20 @@ fun Greeting8(navController: NavController, modifier: Modifier = Modifier) {
         }
     }
 }
+data class Infodb2(
+    val image: String = "",
+    val price: String = "",
+    val quantity: Int = 0,
+    val title: String = ""
+)
+
+
 
 @Composable
 @Preview(showBackground = true)
 fun DefaultPreview8() {
     Proyecto_Plataformas_móvilesTheme {
         Surface(modifier = Modifier.fillMaxSize(), color = colorb) {
-            Greeting8(navController = rememberNavController())
         }
     }
 }

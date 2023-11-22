@@ -186,6 +186,7 @@ class SearchList : ComponentActivity() {
                     items(colecciones.value){ coleccion ->
                     Button(
                         onClick = {
+                                  navController.navigate("ListProducts/${coleccion}")
 
                         },
                         modifier = Modifier
