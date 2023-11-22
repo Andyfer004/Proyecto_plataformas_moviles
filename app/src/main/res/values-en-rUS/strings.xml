@@ -24,4 +24,10 @@
     <string name="error_password">Password must be between 6 and 10 characters</string>
     <string name="cuenta_creada">Account created</string>
     <string name="error_coin_password">Passwords do not match</string>
+    <string name="list_products">Your selected products</string>
+    <string name="back">Back</string>
+    <string name="titleProduct">Product</string>
+    <string name="precio">Price</string>
+    <string name="cantidad">Quantity</string>
+    <string name="total">Total</string>
 </resources>

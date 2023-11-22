@@ -1,6 +1,5 @@
 package com.example.proyecto_plataformas_mviles.navigation
 
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -12,6 +11,7 @@ import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting4
 import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting5
 import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting6
 import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting7
+import com.example.proyecto_plataformas_mviles.ui.theme.views.Greeting8
 
 @Composable
 fun Navigation(modifier: Modifier = Modifier) {
@@ -47,6 +47,9 @@ fun Navigation(modifier: Modifier = Modifier) {
             if (title != null && price != null && image != null) {
                 Greeting7(navController = navController, title = title, price = price, image = image)
             }
+        }
+        composable("ListProducts") {
+            Greeting8(navController = navController)
         }
 
 

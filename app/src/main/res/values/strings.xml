@@ -24,4 +24,10 @@
     <string name="error_password">La contraseña debe tener entre 6 y 10 caracteres</string>
     <string name="cuenta_creada">Cuenta creada</string>
     <string name="error_coin_password">Las contraseñas no coinciden</string>
+    <string name="list_products">Tus productos seleccionados</string>
+    <string name="back">Atrás</string>
+    <string name="titleProduct">Producto</string>
+    <string name="precio">Precio</string>
+    <string name="cantidad">Cantidad</string>
+    <string name="total">Total</string>
 </resources>
