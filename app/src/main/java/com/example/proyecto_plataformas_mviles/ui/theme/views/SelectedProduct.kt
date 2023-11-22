@@ -68,7 +68,7 @@ class SelectedProduct : ComponentActivity() {
 fun Greeting7(title: String,price : String, image : String,navController: NavController, modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
     var quantity by remember { mutableStateOf(1) }
-    val viewModel: InfoViewModel = viewModel()
+    val InfoViewModel: InfoViewModel = viewModel()
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -282,7 +282,7 @@ fun Greeting7(title: String,price : String, image : String,navController: NavCon
                         .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp))
                         .clickable(
                             onClick = {
-                                viewModel.guardarDatosEnFirebase(
+                                InfoViewModel.guardarDatosEnUltimaColeccion(
                                     Infodb(
                                         title = title,
                                         quantity = quantity,

@@ -1,6 +1,9 @@
 package com.example.proyecto_plataformas_mviles.ui.theme.views
 
+import InfoViewModel
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -39,12 +42,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.proyecto_plataformas_mviles.R
 import com.example.proyecto_plataformas_mviles.ui.theme.Proyecto_Plataformas_móvilesTheme
 import com.example.proyecto_plataformas_mviles.ui.theme.colorb
 import com.example.proyecto_plataformas_mviles.ui.theme.transparent
+import com.google.android.play.core.integrity.e
+import com.google.firebase.auth.FirebaseAuth
 
 class SearchList : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +69,7 @@ class SearchList : ComponentActivity() {
     @Composable
     fun Greeting5(navController: NavController, modifier: Modifier = Modifier) {
         var elementobuscado by remember { mutableStateOf("") }
+        val InfoViewModel: InfoViewModel = viewModel()
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -172,7 +179,8 @@ class SearchList : ComponentActivity() {
                             .padding(10.dp)
                             .clickable(
                                 onClick = {
-                                    navController.navigate("Supermarket")
+                                    InfoViewModel.crearNuevaColeccion()
+                                        navController.navigate("Supermarket")
                                 }
                             ),
                         color = Color.White,
