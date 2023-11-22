@@ -2,6 +2,7 @@ package com.example.proyecto_plataformas_mviles.ui.theme.views
 
 import InfoViewModel
 import android.content.ContentValues.TAG
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -14,11 +15,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -26,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -70,6 +77,15 @@ class SearchList : ComponentActivity() {
     fun Greeting5(navController: NavController, modifier: Modifier = Modifier) {
         var elementobuscado by remember { mutableStateOf("") }
         val InfoViewModel: InfoViewModel = viewModel()
+        val auth = FirebaseAuth.getInstance()
+        val userId: String? = auth.currentUser?.uid
+
+        val colecciones = remember { mutableStateOf<List<String>>(listOf()) }
+
+        // Suponiendo que tienes una función que obtiene las colecciones y actualiza el estado
+        LaunchedEffect(Unit) {
+            colecciones.value = InfoViewModel.obtenerNombresDeColecciones(userId!!)
+        }
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -166,6 +182,34 @@ class SearchList : ComponentActivity() {
                 shape = RoundedCornerShape(15.dp),
             )
             {
+                LazyColumn {
+                    items(colecciones.value){ coleccion ->
+                    Button(
+                        onClick = {
+
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp)
+                            .shadow(
+                                elevation = 10.dp,
+                                shape = RoundedCornerShape(20.dp),
+                            ),
+                        shape = RoundedCornerShape(20.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+                    ) {
+
+                            Text(
+                                text = coleccion,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp),
+                                color = Color.Black
+                            )
+                        }
+
+                    }
+                }
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.BottomEnd

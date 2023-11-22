@@ -5,12 +5,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import kotlinx.coroutines.tasks.await
 
 class InfoViewModel : ViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
-    private val userId: String? = auth.currentUser?.uid
+    val userId: String? = auth.currentUser?.uid
 
     fun guardarDatosEnUltimaColeccion(info: Infodb) {
         val user = auth.currentUser
@@ -105,6 +106,30 @@ class InfoViewModel : ViewModel() {
                     null
                 }
             }
+    suspend fun obtenerNombresDeColecciones(userId: String): List<String> {
+        // Lista para almacenar los nombres de las colecciones
+        val nombresColecciones = mutableListOf<String>()
+
+        try {
+            val querySnapshot = db.collection("users").document(userId)
+                .collection("listas")
+                .get()
+                .await()
+
+            // Iterar a través de los documentos y agregar los nombres a la lista
+            for (documento in querySnapshot.documents) {
+                documento.getString("nombre")?.let { nombre ->
+                    nombresColecciones.add(nombre)
+                }
+            }
+        } catch (e: Exception) {
+            println("Error al obtener nombres de colecciones: $e")
+        }
+
+        return nombresColecciones
+    }
+
+
 }
 
 

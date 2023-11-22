@@ -281,36 +281,6 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
                     }
                 }
             }
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.BottomEnd
-                        ) {
-                            Surface(
-                                modifier = modifier
-                                    .width(80.dp)
-                                    .height(80.dp)
-                                    .alpha(0.8f)
-                                    .shadow(elevation = 0.dp, shape = RoundedCornerShape(15.dp))
-                                    .padding(10.dp)
-                                    .clickable(
-                                        onClick = {
-                                            navController.navigate("SelectedProduct")
-                                        }
-                                    ),
-                                color = Color.White,
-                                shape = RoundedCornerShape(15.dp),
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.baseline_playlist_add_24),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .width(80.dp)
-                                        .height(80.dp)
-                                        .padding(10.dp),
-
-                                    )
-                            }
-                        }
 
                     }
                     Spacer(modifier = Modifier.height(20.dp))
