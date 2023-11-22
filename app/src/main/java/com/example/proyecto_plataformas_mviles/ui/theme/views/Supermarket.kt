@@ -50,6 +50,8 @@ class Supermarket : ComponentActivity() {
             }
         }
     }
+    override fun onBackPressed() {
+    }
 }
 
 

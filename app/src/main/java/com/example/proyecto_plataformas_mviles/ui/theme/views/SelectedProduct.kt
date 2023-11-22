@@ -62,6 +62,8 @@ class SelectedProduct : ComponentActivity() {
             }
         }
     }
+    override fun onBackPressed() {
+    }
 }
 
 @Composable

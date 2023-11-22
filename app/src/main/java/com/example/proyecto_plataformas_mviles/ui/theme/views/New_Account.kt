@@ -74,6 +74,8 @@ class New_Account : ComponentActivity() {
         }
         val auth = FirebaseAuth.getInstance()
     }
+    override fun onBackPressed() {
+    }
 }
 
 

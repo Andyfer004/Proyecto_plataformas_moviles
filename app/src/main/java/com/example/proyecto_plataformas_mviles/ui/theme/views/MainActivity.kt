@@ -79,6 +79,8 @@ class MainActivity : ComponentActivity() {
         }
         auth = Firebase.auth
     }
+    override fun onBackPressed() {
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

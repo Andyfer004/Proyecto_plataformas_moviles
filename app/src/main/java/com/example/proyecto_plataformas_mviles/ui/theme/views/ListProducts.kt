@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,12 +22,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -63,6 +68,9 @@ class ListProducts : ComponentActivity() {
                 }
             }
         }
+
+    }
+    override fun onBackPressed() {
     }
 }
 
@@ -75,6 +83,16 @@ fun Greeting8( listName: String,navController: NavController, modifier: Modifier
 
     LaunchedEffect(listName) {
         productos.value = InfoViewModel.obtenerDatosDeProductos(listName)
+    }
+    val isLoading: MutableState<Boolean> = remember { mutableStateOf(true) }
+
+    DisposableEffect(key1 = isLoading.value) {
+        if (isLoading.value) {
+            coroutineScope.launch {
+                isLoading.value = false
+            }
+        }
+        onDispose { }
     }
 
     Column(
@@ -119,89 +137,130 @@ fun Greeting8( listName: String,navController: NavController, modifier: Modifier
             shape = RoundedCornerShape(15.dp),
         )
         {
-            LazyColumn {
-                items(productos.value) { producto ->
-                    //Lista de los productos
-                    //remeberedProductos.value.forEach { product ->
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp)
-                            .shadow(
-                                elevation = 0.dp,
-                                shape = RoundedCornerShape(15.dp)
-                            ), // Espaciado entre elementos
-                        shape = RoundedCornerShape(15.dp),
-                        color = Color.White,
-                    ) {
-                        Row(
+            if (isLoading.value) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.width(64.dp),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            } else {
+
+                LazyColumn {
+                    items(productos.value) { producto ->
+                        //Lista de los productos
+                        //remeberedProductos.value.forEach { product ->
+                        Surface(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(12.dp), // Espaciado entre elementos
-                            verticalAlignment = Alignment.CenterVertically
+                                .padding(12.dp)
+                                .shadow(
+                                    elevation = 0.dp,
+                                    shape = RoundedCornerShape(15.dp)
+                                ), // Espaciado entre elementos
+                            shape = RoundedCornerShape(15.dp),
+                            color = Color.White,
                         ) {
-
-                            // Imagen a la izquierda
-                            Image(
-                                painter = rememberImagePainter(producto.image),
-                                contentDescription = null, // Agrega descripción apropiada
+                            Row(
                                 modifier = Modifier
-                                    .size(80.dp) // Tamaño de la imagen
-                            )
-                            Column {
-                                // Categoría a la derecha
-                                Text(
-                                    text = producto.title,
+                                    .fillMaxWidth()
+                                    .padding(12.dp), // Espaciado entre elementos
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+
+                                // Imagen a la izquierda
+                                Image(
+                                    painter = rememberImagePainter(producto.image),
+                                    contentDescription = null, // Agrega descripción apropiada
                                     modifier = Modifier
-                                        .padding(start = 14.dp)
-                                        .fillMaxWidth(), // Espaciado entre imagen y texto
-                                    style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis,
-                                    color = Color.Black
+                                        .size(80.dp) // Tamaño de la imagen
                                 )
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = producto.price,
-                                    modifier = Modifier
-                                        .padding(start = 14.dp)
-                                        .fillMaxWidth(), // Espaciado entre imagen y texto
-                                    style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis,
-                                    color = Color.Black
-                                )
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = producto.quantity.toString(),
-                                    modifier = Modifier
-                                        .padding(start = 14.dp)
-                                        .fillMaxWidth(), // Espaciado entre imagen y texto
-                                    style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis,
-                                    color = Color.Black
-                                )
-                                Spacer(modifier = Modifier.height(10.dp))
-                                Text(
-                                    text = stringResource(id = R.string.total) + " ${(producto.quantity * producto.price.toDouble()).toFloat()}"+ " $",
-                                    modifier = Modifier
-                                        .padding(start = 14.dp)
-                                        .fillMaxWidth(), // Espaciado entre imagen y texto
-                                    style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis,
-                                    color = Color.Black
-                                )
+                                Column {
+                                    // Categoría a la derecha
+                                    Text(
+                                        text = producto.title,
+                                        modifier = Modifier
+                                            .padding(start = 14.dp)
+                                            .fillMaxWidth(), // Espaciado entre imagen y texto
+                                        style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                        color = Color.Black
+                                    )
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    Text(
+                                        text = producto.price,
+                                        modifier = Modifier
+                                            .padding(start = 14.dp)
+                                            .fillMaxWidth(), // Espaciado entre imagen y texto
+                                        style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                        color = Color.Black
+                                    )
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    Text(
+                                        text = producto.quantity.toString(),
+                                        modifier = Modifier
+                                            .padding(start = 14.dp)
+                                            .fillMaxWidth(), // Espaciado entre imagen y texto
+                                        style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                        color = Color.Black
+                                    )
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    Text(
+                                        text = stringResource(id = R.string.total) + " ${(producto.quantity * producto.price.toDouble()).toFloat()}" + " $",
+                                        modifier = Modifier
+                                            .padding(start = 14.dp)
+                                            .fillMaxWidth(), // Espaciado entre imagen y texto
+                                        style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                        color = Color.Black
+                                    )
+                                }
                             }
                         }
                     }
+
+
                 }
-
-
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
+        val totalGeneral = productos.value.sumOf { producto ->
+            producto.quantity * producto.price.toDouble()
+        }
+        Button(
+            onClick = {
+
+            },
+            modifier = Modifier
+                .width(200.dp)
+                .padding(10.dp)
+                .shadow(
+                    elevation = 10.dp,
+                    shape = RoundedCornerShape(20.dp),
+                ),
+            shape = RoundedCornerShape(20.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+        ) {
+            Text(
+                text = stringResource(id = R.string.total) + " ${totalGeneral.toFloat()}" + " $",
+                modifier = Modifier
+                    .padding(start = 14.dp)
+                    .fillMaxWidth(), // Espaciado entre imagen y texto
+                style = TextStyle(fontSize = 14.sp), // Tamaño de texto apropiado
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                color = Color.Black
+            )
+        }
         Surface(
             modifier = modifier
                 .width(150.dp)

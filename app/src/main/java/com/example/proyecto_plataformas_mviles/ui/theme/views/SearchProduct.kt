@@ -25,6 +25,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -63,6 +65,7 @@ import com.example.proyecto_plataformas_mviles.ui.theme.colorb
 import com.example.proyecto_plataformas_mviles.ui.theme.transparent
 import com.zezzi.eventzezziapp.data.repository.ProductInfo
 import com.zezzi.eventzezziapp.ui.products.ProductsViewModel
+import kotlinx.coroutines.launch
 
 class SearchProduct : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +78,8 @@ class SearchProduct : ComponentActivity() {
                 }
             }
         }
+    }
+    override fun onBackPressed() {
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
@@ -98,6 +103,8 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
             // Manejar errores si es necesario.
         }
     }
+
+
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -216,7 +223,18 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
             color = transparent,
             shape = RoundedCornerShape(15.dp),
         )
-        {
+        {if (isLoading.value) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.width(64.dp),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        } else {
+
             Column(
                 modifier = Modifier
                     .verticalScroll(scrollState)
@@ -281,6 +299,7 @@ fun Greeting6(navController: NavController, modifier: Modifier = Modifier) {
                     }
                 }
             }
+        }
 
                     }
                     Spacer(modifier = Modifier.height(20.dp))

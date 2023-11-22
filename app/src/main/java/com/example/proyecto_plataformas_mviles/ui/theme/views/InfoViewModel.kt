@@ -65,8 +65,7 @@ class InfoViewModel : ViewModel() {
         user?.let { currentUser ->
             val userId = currentUser.uid
 
-            obtenerUltimaColeccion(userId).continueWith { task ->
-                val ultimaColeccionNombre = task.result
+            obtenerUltimaColeccion(userId).addOnSuccessListener { ultimaColeccionNombre ->
                 val nuevoNumero = (ultimaColeccionNombre?.toIntOrNull() ?: 0) + 1
                 val nuevaColeccionNombre = "lista_$nuevoNumero"
 
@@ -76,15 +75,23 @@ class InfoViewModel : ViewModel() {
                     // Otros campos de configuración o metadata
                 )
 
-                // Crear la colección de configuración en la colección "colecciones" dentro del usuario
+                // Crear la colección de configuración en la colección "listas" dentro del usuario
                 db.collection("users").document(userId)
                     .collection("listas").document(nuevaColeccionNombre)
                     .set(configColeccion)
+                    .addOnSuccessListener {
+                        // La nueva colección se ha creado con éxito
+                        println("Nueva colección creada: $nuevaColeccionNombre")
+                    }
+                    .addOnFailureListener { e ->
+                        // Error al crear la nueva colección
+                        println("Error al crear la nueva colección: $e")
+                    }
             }
         }
     }
 
-    // Método para obtener el nombre de la última colección en la colección "colecciones" dentro del usuario
+    // Método para obtener el nombre de la última colección en la colección "listas" dentro del usuario
     private fun obtenerUltimaColeccion(userId: String) =
         db.collection("users").document(userId)
             .collection("listas")
@@ -100,6 +107,7 @@ class InfoViewModel : ViewModel() {
                     null
                 }
             }
+
     suspend fun obtenerNombresDeColecciones(userId: String): List<String> {
         // Lista para almacenar los nombres de las colecciones
         val nombresColecciones = mutableListOf<String>()

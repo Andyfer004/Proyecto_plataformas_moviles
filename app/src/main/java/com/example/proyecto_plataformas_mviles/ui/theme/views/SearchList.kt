@@ -71,6 +71,8 @@ class SearchList : ComponentActivity() {
             }
         }
     }
+    override fun onBackPressed() {
+    }
 }
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
